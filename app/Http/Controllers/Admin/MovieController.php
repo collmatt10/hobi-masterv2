@@ -3,12 +3,27 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Http\UploadedFile;
+use Storage;
 use App\Movie;
 use App\User;
 use Auth;
 
 class MovieController extends Controller
 {
+
+  public function uploadOne(UploadedFile $uploadedFile, $folder = null, $disk = 'public', $filename = null)
+      {
+          $name = !is_null($filename) ? $filename : Str::random(25);
+
+          $file = $uploadedFile->storeAs($folder, $name.'.'.$uploadedFile->getClientOriginalExtension(), $disk);
+
+          return $file;
+      }
+
+
+
 
   public function __construct()
   {
@@ -56,6 +71,7 @@ class MovieController extends Controller
              'boxoffice'  => 'required|string|min:5|max:1000',
              'runtime'  => 'required|string|min:4|max:1000',
              'body'  => 'required|string|min:5|max:1000',
+             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
          ];
          //custom validation error messages
          $messages = [
@@ -71,6 +87,21 @@ class MovieController extends Controller
          $movie->boxoffice = $request->boxoffice;
          $movie->runtime = $request->runtime;
          $movie->body = $request->body;
+         $movie->image = $request->image;
+
+         if($request->hasFile('image')){
+           //get image file
+          $image = $request->image;
+            //get just extension
+           $ext = $image->getClientOriginalExtension();
+           //make unique
+           $filename = uniqid().'.'.$ext;
+           $image->storeAs('public/images',$filename);
+           Storage::put('file.jpg', $contents);
+           Storage::delete("public/images/{$movie->image}");
+           $movie->image = $filename;
+         }
+       // Persist user record to database
          $movie->user_id = Auth::id();
          $movie->save(); // save it to the database.
          //Redirect to a specified route with flash message.
@@ -133,6 +164,7 @@ class MovieController extends Controller
          'boxoffice'=>'required|max:191',
          'runtime'=>'required|max:5',
          'body'=>'required|max:500',
+         'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
        ]);
 
        $movie->title = $request->input('title');
@@ -141,6 +173,7 @@ class MovieController extends Controller
        $movie->boxoffice = $request->input('boxoffice');
        $movie->runtime = $request->input('runtime');
        $movie->body = $request->input('body');
+       $movie->image = $request->image;
 
        $movie->save();
 

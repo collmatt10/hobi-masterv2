@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use App\Movie;
 use Auth;
 use App\User;
 class MovieController extends Controller
 {
+
+
 
   public function __construct()
    {
@@ -57,6 +60,7 @@ class MovieController extends Controller
       'boxoffice'  => 'required|string|min:5|max:1000',
       'runtime'  => 'required|string|min:4|max:1000',
       'body'  => 'required|string|min:5|max:1000',
+      'image' => 'required|string|min:5|max:1000',
   ];
   //custom validation error messages
   $messages = [
@@ -72,6 +76,7 @@ class MovieController extends Controller
   $movie->boxoffice = $request->boxoffice;
   $movie->runtime = $request->runtime;
   $movie->body = $request->body;
+  $movie->image = $request->image;
   $movie->user_id = Auth::id();
   $movie->save(); // save it to the database.
   //Redirect to a specified route with flash message.
@@ -129,6 +134,7 @@ class MovieController extends Controller
         'boxoffice'  => 'required|string|min:5|max:1000',
         'runtime'  => 'required|string|min:4|max:1000',
         'body'  => 'required|string|min:5|max:1000',
+        'image' => 'required|string|min:5|max:1000',
       ];
       $messages = [
         'title.unique' => 'Movie title should be unique',
@@ -142,6 +148,7 @@ class MovieController extends Controller
         $movie->boxoffice = $request->boxoffice;
         $movie->runtime = $request->runtime;
         $movie->body = $request->body;
+        $movie->image = $request->image;
         $movie->save(); //can be used for both creating and updating
         return redirect()
             ->route('user.movies.show',$id)
