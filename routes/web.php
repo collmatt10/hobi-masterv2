@@ -47,6 +47,7 @@ Route::delete('movies/{id}','MovieController@destroy')->name('movies.destroy');
 Route::post('/addimage', 'MovieController@store')->name('addimage');
 
 Route::get('/user/movies','User\MovieController@index')->name('user.movies.index');
+Route::get('/user/movies/latests','User\MovieController@latest')->name('user.movies.latest');
 Route::get('/user/movies{id}','User\MovieController@show')->name('user.movies.show');
 
 Route::get('/admin/movies','Admin\MovieController@index')->name('admin.movies.index');

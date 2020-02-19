@@ -29,7 +29,13 @@ class MovieController extends Controller
           'movies' =>$movies
         ]);
     }
-
+    public function latest()
+    {
+        $movies = Movie::orderBy('created_at','desc')->paginate(4);
+        return view('user.movies.latest')->with([
+          'movies' =>$movies
+        ]);
+    }
 
 
     /**
