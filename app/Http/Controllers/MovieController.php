@@ -59,7 +59,7 @@ class MovieController extends Controller
       'company'  => 'required|string|min:5|max:1000',
       'boxoffice'  => 'required|string|min:5|max:1000',
       'runtime'  => 'required|string|min:4|max:1000',
-      'body'  => 'required|string|min:5|max:1000',
+      'body'  => 'required|string|min:5|max:5000',
       'image' => 'required|string|min:5|max:1000',
   ];
   //custom validation error messages

@@ -21,7 +21,6 @@ class CreateMoviesTable extends Migration
             $table->integer('boxoffice');
             $table->string('runtime');
             $table->string('body');
-            $table->binary('image');
             $table->timestamps();
         });
     }
